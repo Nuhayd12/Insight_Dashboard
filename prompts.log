@@ -1,0 +1,36 @@
+AI Analyst Presentation Brief: Prompt Log (All prompts used to generate code)
+
+Phase 1: Data Preparation and Connection
+Prompt Log Entry 1: Database Setup
+Goal: Generate a Python script to create and populate a SQLite database from the provided Excel file.
+AI Prompt: "Generate a Python script using the pandas and sqlite3 libraries. The script should read an Excel file named 'client_data.xlsx' with multiple sheets (Orders, Cancels, Inventory, Store, Product, Calendar). For each sheet, create a corresponding table in a new SQLite database file named 'retail_analysis.db' and load the sheet's data into it. Set the index to be ignored when loading the data."
+
+Prompt Log Entry 2: Main Analytical SQL Query
+Goal: Generate a single, comprehensive SQL query to join all tables into one flat analytical dataset suitable for the Streamlit dashboard.
+AI Prompt: "Write an SQL query for SQLite to join the five main tables: Orders (O), Cancels (C), Store (S), Product (P), and Calendar (CAL). 1. Start with Orders and perform a LEFT JOIN to Cancels on Store_number, Item_ID, and Order_date (as the composite key). 2. Use standard JOIN for the other three tables. 3. Use COALESCE to set Cancelled_Quantity and Cancelled_dollar_amount to 0 where the join from Cancels is NULL. 4. Select all relevant columns for analysis."
+
+Phase 2: Streamlit Dashboard Structure and Logic
+Prompt Log Entry 3: Streamlit App Structure
+Goal: Generate the initial Python code for the Streamlit dashboard (app.py), including database connection, query execution, sidebar filters, and a main area for key metrics.
+AI Prompt: "Generate the complete Python code for a Streamlit app. The app must: 1. Define a constant for a long, complex SQL query joining Orders, Cancels, Store, Product, and Calendar tables. 2. Use the @st.cache_data decorator on a function to connect to a SQLite database (retail_analysis.db) and run the SQL query to return a pandas DataFrame. 3. Create a title and set up the layout. 4. Implement a sidebar with multi-select filters for Store Region, Product Department, and Cancel Reason using the unique values from the loaded DataFrame. 5. Apply the filters to the DataFrame. 6. Display the filtered dataset size and the raw filtered data table."
+
+Prompt Log Entry 4 (Diagnostic/Fix): Data Type Conversion
+Goal: Modify the load_data function to force the quantity columns to numeric types, resolving the TypeError encountered during metric calculation.
+AI Prompt: "Modify the load_data function in the Streamlit app. After loading the DataFrame from SQLite, use pd.to_numeric to convert the Ordered_Quantity and Cancelled_Quantity columns to numeric types, setting errors='coerce' to handle any non-numeric values as NaN."
+
+Phase 3: Analytical Visualizations
+Prompt Log Entry 5: Root Cause Analysis (Chart 1)
+Goal: Generate a stacked bar chart showing the total cancelled quantity broken down by Cancel_reason and further segmented by Product_Department.
+AI Prompt: "Using the filtered DataFrame df_filtered, write Python code to generate a Streamlit chart that visualizes the root causes of cancellation. Create a stacked bar chart using Altair. The Y-axis should be the sum of Cancelled_Quantity, and the X-axis should be Cancel_reason. The bars should be stacked and colored by Product_Department. Add a clear title and tooltips for the quantity and department."
+
+Prompt Log Entry 6: Geographic Pain Points (Chart 2)
+Goal: Generate a bar chart showing the Cancellation Rate (Cancelled Qty / Ordered Qty) for each Store_Region.
+AI Prompt: "Using the filtered DataFrame df_filtered, write Python code to calculate and visualize the cancellation rate by Store_Region. 1. Group the data by Store_Region. 2. Calculate the Cancellation_Rate as the sum of Cancelled_Quantity divided by the sum of Ordered_Quantity. 3. Create an Altair horizontal bar chart showing the regions, sorted by the highest rate, and use the rate on the X-axis formatted as a percentage."
+
+Prompt Log Entry 7: Inventory Impact (Chart 3)
+Goal: Generate a bar chart showing the top 10 brands with the highest cancellation quantity.
+AI Prompt: "Using the filtered DataFrame df_filtered, write Python code to calculate the top 10 Product_Brand by the total sum of Cancelled_Quantity. Create an Altair bar chart showing these brands sorted by quantity and clearly label the axes."
+
+Prompt Log Entry 8 (Diagnostic/Fix): Altair Syntax Correction
+Goal: Fix the SchemaValidationError in the final Altair chart by correcting the formatting syntax for the X-axis.
+AI Prompt: "The Altair chart for the 'Brands Driving Cancel Volume' is throwing a SchemaValidationError because alt.X does not accept the format parameter directly. Modify the code to move the quantity formatting (e.g., format=',.0f') inside the alt.Axis() function for the X-axis."
