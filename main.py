@@ -183,9 +183,9 @@ else:
 
 if total_sales_dollars > 0:
     overall_dollar_rate = total_cancelled_dollars / total_sales_dollars
-    col4.metric("Total \$ Cancelled", f"${total_cancelled_dollars:,.0f}", delta=f"Rate: {overall_dollar_rate:.2%}", delta_color="inverse")
+    col4.metric("Total $ Cancelled", f"${total_cancelled_dollars:,.0f}", delta=f"Rate: {overall_dollar_rate:.2%}", delta_color="inverse")
 else:
-    col4.metric("Total \$ Cancelled", "N/A")
+    col4.metric("Total $ Cancelled", "N/A")
 
 
 #4. TIME-BASED ANALYSIS (Visuals 2, 3, 12)
